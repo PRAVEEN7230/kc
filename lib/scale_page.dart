@@ -28,7 +28,7 @@ class _ScalePageState extends State<ScalePage>{
             //borderRadius: BorderRadius.circular(20.0),
               color: Colors.white,
               image: DecorationImage(fit: BoxFit.cover,
-                image:  AssetImage('lib/images/ScaleVertical.png'),)
+                image:  AssetImage('images/ScaleVertical.png'),)
           ),
         ),
         Column(
