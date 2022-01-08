@@ -21,9 +21,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepOrange,
       ),
+      //home: const MyHomePage(title: 'Kali Calculator'),
       home: AnimatedSplashScreen(
         splashTransition: SplashTransition.scaleTransition,
         splashIconSize: 180,
+        duration: 1500,
         //pageTransitionType: PageTransitionType.scale,
         backgroundColor: Colors.deepOrangeAccent,
         splash: Column(
