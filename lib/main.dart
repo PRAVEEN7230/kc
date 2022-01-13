@@ -1,8 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kc/splash_screen.dart';
+import 'package:flutter/services.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'home_page.dart';
-import 'package:page_transition/page_transition.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,6 +14,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
       title: 'Kali Calculator',
       debugShowCheckedModeBanner: false,
@@ -24,33 +28,12 @@ class MyApp extends StatelessWidget {
       //home: const MyHomePage(title: 'Kali Calculator'),
       home: AnimatedSplashScreen(
         splashTransition: SplashTransition.scaleTransition,
-        splashIconSize: 180,
-        duration: 1500,
+        splashIconSize: 150,
+        duration: 1000,
         //pageTransitionType: PageTransitionType.scale,
         backgroundColor: Colors.deepOrangeAccent,
-        splash: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height: 120,
-              width: 120,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  color: Colors.white,
-                  image: const DecorationImage(fit: BoxFit.cover,
-                    image:  AssetImage('images/AppIcon.png'),)
-              ),
-            ),
-            const SizedBox(height: 15,),
-            const Text(
-              'Kali Calculator',
-              style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white
-              ),
-            ),
-          ],
+        splash: Center(
+          child: Image.asset('images/AppIcon.png')
         ),
         nextScreen: const MyHomePage(title: 'Kali Calculator'),
       ),
