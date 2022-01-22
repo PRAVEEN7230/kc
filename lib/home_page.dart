@@ -36,22 +36,25 @@ class _MyHomePageState extends State<MyHomePage> {
         try {
           waistSize = double.parse(t1.text);
           parts = int.parse(t2.text);
-          if (parts<1) {
+          if (parts<1 || waistSize<10) {
             throw Exception();
           }
           _fraction = waistSize/parts;
           int _frac = _fraction.round();
-
-          for(int i=0;i<4;i++) {
-            numbers[i]=i+_frac-1;
-          }
           double height= MediaQuery.of(context).size.height;
           double width= MediaQuery.of(context).size.width;
           if (kDebugMode) {
             print('Height $height,width $width');
           }
-          spacing = (height)*0.25;
-          arrowPosition = (_fraction-_frac+1)*spacing;
+          spacing = height*0.25;
+          if (_frac>0) {
+            for (int i = 0; i < 4; i++) {
+              numbers[i] = i + _frac - 1;
+            }
+            arrowPosition = (_fraction-_frac+1)*spacing;
+          }else{
+            arrowPosition = _fraction*spacing;
+          }
           if (kDebugMode) {
             print([_fraction,_frac,waistSize,parts,arrowPosition,spacing]);
           }
@@ -63,20 +66,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: AlertDialog(
                   backgroundColor: Colors.grey[200],
                   shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25.0))
+                      borderRadius: BorderRadius.all(Radius.circular(24))
                   ),
                   content: Stack(
                     alignment: Alignment.center,
                     children: [
                       ColorFiltered(
-                        colorFilter: ColorFilter.mode(Colors.deepOrange.shade200, BlendMode.hue),
+                        colorFilter: ColorFilter.mode(Colors.deepOrange.shade50, BlendMode.hue),
                         child: Container(
-                          //height: MediaQuery.of(context).size.height,
-                          //width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(0),
+                              borderRadius: BorderRadius.circular(16),
                               image: const DecorationImage(
-                                fit: BoxFit.fill,
+                                fit: BoxFit.cover,
                                 filterQuality: FilterQuality.medium,
                                 image:  AssetImage('images/ScaleVertical.png'),
                               )
@@ -99,13 +102,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         }).toList(),
                       ),
                       Positioned(
-                        top: 390,//arrowPosition,
+                        top: arrowPosition,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.arrow_back,color: Colors.deepOrangeAccent,size: 45,),
-                            SizedBox(width: 100,),//width*0.315,),
-                            Icon(Icons.arrow_forward,color: Colors.deepOrangeAccent,size: 45,),
+                          children: [
+                            const Icon(Icons.arrow_back,color: Colors.deepOrangeAccent,size: 45,),
+                            SizedBox(width: width*0.315,),
+                            const Icon(Icons.arrow_forward,color: Colors.deepOrangeAccent,size: 45,),
                           ],
                         ),
                       ),
@@ -148,8 +151,8 @@ class _MyHomePageState extends State<MyHomePage> {
         } on Exception{
            _showSnackBar('Invalid Input!! Try Again');
         }
-    });
-  }
+      });
+    }
 
   void _showSnackBar(String message){
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
