@@ -61,22 +61,26 @@ class _MyHomePageState extends State<MyHomePage> {
               return Screenshot(
                 controller: screenshotController,
                 child: AlertDialog(
-                  //title: const Text('Scale'),
+                  backgroundColor: Colors.grey[200],
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(25.0))
                   ),
                   content: Stack(
                     alignment: Alignment.center,
                     children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            image: const DecorationImage(
-                              fit: BoxFit.cover,
-                              filterQuality: FilterQuality.medium,
-                              image:  AssetImage('images/ScaleVertical.png'),)
+                      ColorFiltered(
+                        colorFilter: ColorFilter.mode(Colors.deepOrange.shade200, BlendMode.hue),
+                        child: Container(
+                          //height: MediaQuery.of(context).size.height,
+                          //width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(0),
+                              image: const DecorationImage(
+                                fit: BoxFit.fill,
+                                filterQuality: FilterQuality.medium,
+                                image:  AssetImage('images/ScaleVertical.png'),
+                              )
+                          ),
                         ),
                       ),
                       Column(
@@ -95,14 +99,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         }).toList(),
                       ),
                       Positioned(
-                        top: arrowPosition,
-                        //bottom: 50,
-                        left: width*0.04,
+                        top: 390,//arrowPosition,
                         child: Row(
-                          children: [
-                            const Icon(Icons.arrow_back,color: Colors.deepOrangeAccent,size: 45,),
-                            SizedBox(width: width*0.315,),
-                            const Icon(Icons.arrow_forward,color: Colors.deepOrangeAccent,size: 45,),
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.arrow_back,color: Colors.deepOrangeAccent,size: 45,),
+                            SizedBox(width: 100,),//width*0.315,),
+                            Icon(Icons.arrow_forward,color: Colors.deepOrangeAccent,size: 45,),
                           ],
                         ),
                       ),
@@ -110,13 +113,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         visible: greenArrowStatus,
                         child: Positioned(
                           top: arrowPosition+spacing,
-                          //bottom: 50,
-                          left: width*0.04,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(Icons.arrow_back,color: Colors.lightGreenAccent,size: 45,),
+                              const Icon(Icons.arrow_back,color: Colors.lightGreen,size: 45,),
                               SizedBox(width: width*0.315,),
-                              const Icon(Icons.arrow_forward,color: Colors.lightGreenAccent,size: 45,),
+                              const Icon(Icons.arrow_forward,color: Colors.lightGreen,size: 45,),
                             ],
                           ),
                         ),
@@ -126,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         right: 0,
                         child: MaterialButton(
                           onPressed: _saveScale,
-                          color: Colors.deepOrangeAccent,
+                          color: Colors.deepOrange[300],
                           child: const Text(
                             "Share",
                             style: TextStyle(
@@ -143,13 +145,14 @@ class _MyHomePageState extends State<MyHomePage> {
               );
             },
           );
-        } on Exception catch (e) {
+        } on Exception{
            _showSnackBar('Invalid Input!! Try Again');
         }
     });
   }
 
   void _showSnackBar(String message){
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
   final snackBar = SnackBar(
     behavior: SnackBarBehavior.floating,
     backgroundColor: Colors.blueGrey,
@@ -163,129 +166,183 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final _size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              child: Text(widget.title),
-            ),
-          ],
-        ),
-        actions: [
-          Switch(
-            onChanged: (bool value) { _greenArrowStatusChanger(); },
-            value: greenArrowStatus,
-            activeColor: Colors.lightGreenAccent,
-          ),
-          const SizedBox(width: 20,),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            const SizedBox(height: 40,),
-            Container(
-              height: MediaQuery.of(context).size.height*0.45,
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.all(25.0),
+      backgroundColor: Colors.deepOrange[200],
+      // appBar: AppBar(
+      //   title: Row(
+      //     mainAxisAlignment: MainAxisAlignment.start,
+      //     mainAxisSize: MainAxisSize.max,
+      //     children: [
+      //       Padding(
+      //         padding: const EdgeInsets.only(left: 16.0),
+      //         child: Text(widget.title),
+      //       ),
+      //     ],
+      //   ),
+      //   actions: [
+      //     Switch(
+      //       onChanged: (bool value) { _greenArrowStatusChanger(); },
+      //       value: greenArrowStatus,
+      //       activeColor: Colors.lightGreenAccent,
+      //     ),
+      //     const SizedBox(width: 20,),
+      //   ],
+      // ),
+      body: Column(
+        children: [
+          SizedBox(height: _size.height*0.07,),
+          Container(
+              height: _size.height*0.1,
+              margin: const EdgeInsets.only(left: 25.0,right: 25),
               decoration: BoxDecoration(
-                color: Colors.white70,
-                borderRadius: BorderRadius.circular(30.0),
-                boxShadow: const [
-                  BoxShadow(color: Color(0xE5FF1B1B), blurRadius: 12.0 ),
-                  BoxShadow(color: Color(0xADCB6D2F), blurRadius: 40.0)
+                color: Colors.deepOrange[200],
+                borderRadius: BorderRadius.circular(15.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade800,
+                    offset: const Offset(4,4),
+                    blurRadius: 15,
+                    spreadRadius: 1,
+                  ),
+                  const BoxShadow(
+                    color: Colors.white70,
+                    offset: Offset(-4,-4),
+                    blurRadius: 15,
+                    spreadRadius: 1,
+                  )
                 ],
-                border: Border.all(
-                  width: 3.0,
-                  color: Colors.deepOrange,
-                ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: TextField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
-                          labelText: 'Waist Size',
-                          hintText: 'Enter Waist Size',
-                        ),
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(RegExp(r'([0-9]+\.?[0-9]*|\.[0-9]+)')),
-                        ],
-                        controller: t1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: Text(
+                        widget.title,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: TextField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
-                          labelText: 'Fractions',
-                          hintText: 'Enter no of Kali',
-                        ),
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                        ],
-                        controller: t2,
+                  ),
+                  Switch(
+                    onChanged: (bool value) { _greenArrowStatusChanger(); },
+                    value: greenArrowStatus,
+                    activeColor: Colors.deepOrange[300],
+                  ),
+                ],
+              )
+          ),
+          Center(
+            child: Column(
+              children: [
+                SizedBox(height: _size.height*0.05,),
+                Container(
+                  height: _size.height*0.45,
+                  margin: const EdgeInsets.all(25.0),
+                  decoration: BoxDecoration(
+                    color: Colors.deepOrange[200],
+                    borderRadius: BorderRadius.circular(25.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade800,
+                        offset: const Offset(4,4),
+                        blurRadius: 15,
+                        spreadRadius: 1,
                       ),
+                      const BoxShadow(
+                        color: Colors.white70,
+                        offset: Offset(-4,-4),
+                        blurRadius: 15,
+                        spreadRadius: 1,
+                      )
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                              ),
+                              labelText: 'Waist Size',
+                              hintText: 'Enter Waist Size',
+                            ),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp(r'([0-9]+\.?[0-9]*|\.[0-9]+)')),
+                            ],
+                            controller: t1,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                              ),
+                              labelText: 'Fractions',
+                              hintText: 'Enter no of Kali',
+                            ),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                            ],
+                            controller: t2,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 20,),
-            SizedBox(
-              height: 60,
-              width: 200,
-              child: FloatingActionButton.extended(
-                  onPressed: _calculateFraction,
-                  tooltip: 'Calculate',
-                  label: const Text(
-                      'Calculate',
-                    style: TextStyle(
+                SizedBox(height: _size.height*0.03,),
+                Container(
+                  height: 60,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.deepOrange[300],
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade800,
+                        offset: const Offset(4,4),
+                        blurRadius: 15,
+                        spreadRadius: 1,
+                      ),
+                      const BoxShadow(
+                        color: Colors.white70,
+                        offset: Offset(-4,-4),
+                        blurRadius: 15,
+                        spreadRadius: 1,
+                      )
+                    ],
+                  ),
+                  child: TextButton(
+                      onPressed: _calculateFraction,
+                      child: const Text(
+                            'Calculate',
+                            style: TextStyle(
                               fontSize: 30,
+                              color: Colors.white,
                               fontStyle: FontStyle.italic,
                               fontWeight: FontWeight.bold,
                             ),
-                  )
-              ),
-            )
-            // SizedBox(
-            //   height: 60,
-            //   width: 220,
-            //   child: ElevatedButton(
-            //     onPressed: (){
-            //       _calculateFraction();
-            //     },
-            //     style: ElevatedButton.styleFrom(
-            //       onPrimary: Colors.white,
-            //       textStyle: const TextStyle(
-            //         fontSize: 30,
-            //         fontStyle: FontStyle.italic,
-            //         fontWeight: FontWeight.bold,
-            //       ),
-            //     ),
-            //     child: const Text('Calculate',),
-            //   ),
-            // ),
-          ],
-        ),
-        // This trailing comma makes auto-formatting nicer for build methods.
+                          ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -296,7 +353,6 @@ class _MyHomePageState extends State<MyHomePage> {
       final directory = await getApplicationDocumentsDirectory();
       final imagePath = await File('${directory.path}/WaistSize-$waistSize-Kali-($parts).png').create();
       await imagePath.writeAsBytes(imageFile);
-      print(imagePath);
       await Share.shareFiles([imagePath.path],text:'Waist Size : $waistSize and No of Kali : $parts');
     }
   }
